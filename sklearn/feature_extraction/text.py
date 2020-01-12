@@ -1135,13 +1135,13 @@ class CountVectorizer(_VectorizerMixin, BaseEstimator):
                     feature_idx = vocabulary.get(feature, -1)
                     if feature_idx >= 0:
                         feature_counter[feature_idx] += 1
+                j_indices.extend(feature_counter.keys())
+                values.extend(feature_counter.values())
             else:
                 for feature in analyze(doc):
-                    feature_idx = vocabulary[feature]
-                    feature_counter[feature_idx] += 1
-
-            j_indices.extend(feature_counter.keys())
-            values.extend(feature_counter.values())
+                    feature_counter[feature] += 1
+                j_indices.extend((vocabulary[k] for k in feature_counter.keys()))
+                values.extend(feature_counter.values())
             indptr.append(len(j_indices))
 
         if not fixed_vocab:
