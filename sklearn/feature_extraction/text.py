@@ -1129,14 +1129,11 @@ class CountVectorizer(_VectorizerMixin, BaseEstimator):
         values = _make_int_array()
         indptr.append(0)
         for doc in raw_documents:
-            feature_counter = {}
+            feature_counter = defaultdict(int)
             for feature in analyze(doc):
                 try:
                     feature_idx = vocabulary[feature]
-                    if feature_idx not in feature_counter:
-                        feature_counter[feature_idx] = 1
-                    else:
-                        feature_counter[feature_idx] += 1
+                    feature_counter[feature_idx] += 1
                 except KeyError:
                     # Ignore out-of-vocabulary items for fixed_vocab=True
                     continue
